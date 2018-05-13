@@ -45,7 +45,7 @@ class TracesCounter implements Runnable {
         new File("calculationResults/").mkdir();
         Path file = Paths.get("calculationResults/" + fileName);
 
-        for (int j = 0; j < Nsteps; j++) {
+        for (int j = 0; j <= Nsteps; j++) {
             time = tmin + (step * j);
             delta = shift(time);
             theta = theta0 + (omega * time);
