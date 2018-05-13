@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -101,7 +99,6 @@ class TracesCounter implements Runnable {
         return T_model;
     }
 
-    @Contract(pure = true)
     private double shift (double time) {
         double shift;
         if (0.0 >= time) {

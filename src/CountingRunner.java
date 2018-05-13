@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.NotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -13,7 +12,7 @@ class CountingRunner {
 
     CountingRunner() {}
 
-    private static void readFileName(@NotNull BufferedReader br) {
+    private static void readFileName(BufferedReader br) {
         try {
             System.out.println("Enter name of file (File will have .dat extension. If file exists, it will be overwritten): ");
             String name = br.readLine();
@@ -29,7 +28,7 @@ class CountingRunner {
         }
     }
 
-    private static void readOmega(@NotNull BufferedReader br) {
+    private static void readOmega(BufferedReader br) {
         try {
             System.out.print("Enter Omega: ");
             _omega = Float.parseFloat(br.readLine());
@@ -44,7 +43,7 @@ class CountingRunner {
         }
     }
 
-    private static void readTheta0(@NotNull BufferedReader br) {
+    private static void readTheta0(BufferedReader br) {
         try {
             System.out.print("Enter Theta0: ");
             _theta0 = Float.parseFloat(br.readLine());

@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,7 +12,6 @@ public class FilesParser {
     FilesParser() {
     }
 
-    @NotNull
     static void getExpDatFilesStrings() {
         for (String fileName : expFiles) {
             try {
@@ -25,7 +22,6 @@ public class FilesParser {
         }
     }
 
-    @NotNull
     static void getTheorDatFileString(String fileName) {
         try {
             theorDatString = readFile(fileName);
