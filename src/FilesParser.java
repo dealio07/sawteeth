@@ -3,9 +3,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 public class FilesParser {
+    private final double tmin = -0.25, tmax = 1.25;
     private String[] _expFiles = {"all.dat", "all_03.dat", "all_06.dat"};
     private String[] directories = {"", "calculationResults/"};
     private List<String> _theorFileList;
@@ -87,21 +90,37 @@ public class FilesParser {
             ArrayList<Double> partition = new ArrayList<>(doublesList.subList(i+1, Math.min(i + 11, doublesList.size())));
             partitions.add(partition);
         }
-        for (int i = 0; i < time.size(); i++) {
-            resultDictionary.put(time.get(i), partitions.get(i));
+        if (theorOrExp == 0) {
+            ArrayList<Double> normTime = normalizeTime(time);
+            for (int i = 0; i < normTime.size()-1; i++) {
+                resultDictionary.put(normTime.get(i), partitions.get(i));
+            }
+        } else {
+            for (int i = 0; i < time.size(); i++) {
+                resultDictionary.put(time.get(i), partitions.get(i));
+            }
         }
         if (theorOrExp == 0) {
             return normalizeExpData(resultDictionary);
-        } else return resultDictionary;
+        } else {
+            return resultDictionary;
+        }
     }
 
     Map<Double, ArrayList<Double>> normalizeExpData(Map<Double, ArrayList<Double>> expData) {
         Map<Double, ArrayList<Double>> normalizedData = new HashMap<>();
         Object[] keysArr = expData.keySet().toArray();
         double[] keys = new double[expData.size()];
+        ArrayList<Double> keysList = new ArrayList<>();
+        DecimalFormat dFormat = new DecimalFormat("####0.00000");
+        DecimalFormatSymbols sym = DecimalFormatSymbols.getInstance();
+        sym.setDecimalSeparator('.');
+        dFormat.setDecimalFormatSymbols(sym);
         for (int i = 0; i < expData.size(); i++) {
             keys[i] = (double)keysArr[i];
+            keysList.add(keys[i]);
         }
+        ArrayList<Double> normTime = new ArrayList<>(normalizeTime(keysList));
         double[] allValues = new double[expData.size()*10];
         double allValuesSumm = 0;
         int valuesCount = 0;
@@ -122,11 +141,27 @@ public class FilesParser {
             for (int j = 0; j < line.size(); j++) {
                 double t = line.get(j);
                 t = t / normalizer;
-                normalizedLine.add(j, t);
+                double tF = Double.parseDouble(dFormat.format(t));
+                normalizedLine.add(j, tF);
             }
-            normalizedData.put(keys[i], normalizedLine);
+            normalizedData.put(normTime.get(i), normalizedLine);
         }
         return normalizedData;
+    }
+
+    ArrayList<Double> normalizeTime(ArrayList<Double> oldTime) {
+        final double step = (tmax - tmin) / 1000;
+        ArrayList<Double> newTime = new ArrayList<>();
+        DecimalFormat dFormat = new DecimalFormat("####0.00000");
+        DecimalFormatSymbols sym = DecimalFormatSymbols.getInstance();
+        sym.setDecimalSeparator('.');
+        dFormat.setDecimalFormatSymbols(sym);
+        for (int j = 0; j <= 1000-(1000-oldTime.size()); j++) {
+            double time = (tmin + (step * j));
+            double t = Double.parseDouble(dFormat.format(time));
+            newTime.add(t);
+        }
+        return newTime;
     }
 
     public String[] get_expFiles() {

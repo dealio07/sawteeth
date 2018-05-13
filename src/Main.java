@@ -14,9 +14,11 @@ public class Main {
                     filesParser.get_expFiles()[1]);
             Map<Double, ArrayList<Double>> theorFile = filesParser.trimStringsAndGetData(1,
                     filesParser.getDirectories()[1],
-                    filesParser.get_theorFileList().get(10));
-            System.out.println(expFile.get(60.14385));
-            System.out.println(theorFile.get(0.00050));
+                    filesParser.get_theorFileList().get(15));
+            //System.out.println(expFile.get(0.00050));
+            //System.out.println(expFile);
+            //System.out.println(theorFile.get(0.00050));
+            //System.out.println(theorFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
